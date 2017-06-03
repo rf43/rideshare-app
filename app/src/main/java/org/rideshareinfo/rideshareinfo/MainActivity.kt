@@ -20,8 +20,8 @@ class MainActivity : AppCompatActivity() {
         val adapter = UserAdapter()
         list.adapter = adapter
         adapter.users = listOf(
-                User("user1", "driving", 0L, 0.0 to 0.0),
-                User("user2", "need a ride", 0L, 0.0 to 0.0)
+                User("user1", "driving"),
+                User("user2", "need a ride")
         )
 
         findViewById(R.id.driving).setOnClickListener {
@@ -38,14 +38,22 @@ class MainActivity : AppCompatActivity() {
             val user = FirebaseUser(adapter.users[0].copy(status = "don't need a ride"))
             user.updateUserStatus()
         }
+
+        findViewById(R.id.before).setOnClickListener {
+            askUserStatusNotification(this)
+        }
+
+        findViewById(R.id.after).setOnClickListener {
+            rideSurvayNotification(this)
+        }
     }
 }
 
 class UserAdapter : RecyclerView.Adapter<UserAdapter.Holder>() {
-    var users: List<User>
-        get() = users
+    var users: List<User> = emptyList()
+        get() = field
         set(value) {
-            this.users = value
+            field = value
             notifyDataSetChanged()
         }
 

@@ -26,8 +26,5 @@ class FirebaseUser(private val user: User) {
 
     fun updateUserStatus() {
         dbRefBaseState.child(KEY_STATUS_NODE).setValue(user.status)
-        dbRefBaseState.child(KEY_LOCATION_LAT).setValue(user.latLongLocation.first)
-        dbRefBaseState.child(KEY_LOCATION_LONG).setValue(user.latLongLocation.second)
-        dbRefBaseState.child(KEY_READY_TIME).setValue(user.readyTime)
     }
 }

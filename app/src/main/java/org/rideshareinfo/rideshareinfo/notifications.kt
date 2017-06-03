@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.NotificationCompat
+import com.google.firebase.database.*
 
 fun askUserStatusNotification(context: Context) {
     val notificationManager = context.getSystemService(NotificationManager::class.java)
@@ -41,12 +42,24 @@ class RideStatusReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val notificationManager = context.getSystemService(NotificationManager::class.java)
         notificationManager.cancelAll()
-        when (intent.getStringExtra("status")) {
-            "yes" -> {
-            }
-            "no" -> {
-            }
-        }
+        FirebaseDatabase.getInstance().reference
+                .child(KEY_RIDESHARE_DATA_BASE)
+                .child(KEY_USERS_NODE)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val child = snapshot.children.iterator().next()
+                        val user = User.fromFirebase(child)
+                        FirebaseUser(when (intent.getStringExtra("status")) {
+                            "yes" -> user.copy(status = "need a ride")
+                            "no" -> user.copy(status = "don't need a ride")
+                            else -> user
+                        }).updateUserStatus()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                })
     }
 }
 
