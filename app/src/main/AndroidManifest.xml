@@ -20,6 +20,10 @@
         <receiver
             android:name=".RideStatusReceiver"
             android:exported="true" />
+
+        <receiver
+            android:name=".RideCompleteReceiver"
+            android:exported="true" />
     </application>
 
 </manifest>

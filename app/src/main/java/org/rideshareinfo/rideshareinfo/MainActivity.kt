@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         ))
 
         findViewById(R.id.good).setOnClickListener {
-            askUserStatusNotification(this)
+            rideSurvayNotification(this)
         }
     }
 }

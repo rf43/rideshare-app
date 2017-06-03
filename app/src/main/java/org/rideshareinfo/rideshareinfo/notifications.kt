@@ -18,7 +18,39 @@ fun askUserStatusNotification(context: Context) {
     notificationManager.notify(0, notification)
 }
 
+fun rideSurvayNotification(context: Context) {
+    val notificationManager = context.getSystemService(NotificationManager::class.java)
+    val notification = NotificationCompat.Builder(context)
+            .setContentText("Did your ride go well?")
+            .setSmallIcon(R.drawable.ic_notification)
+            .addAction(0, "Yes", PendingIntent.getBroadcast(context, 0, RideCompleteReceiver.yes(context), 0))
+            .addAction(0, "No", PendingIntent.getBroadcast(context, 0, RideCompleteReceiver.no(context), 0))
+            .build()
+    notificationManager.notify(0, notification)
+}
+
 class RideStatusReceiver : BroadcastReceiver() {
+    companion object {
+        fun yes(context: Context): Intent = Intent(context, RideStatusReceiver::class.java)
+                .putExtra("status", "yes")
+
+        fun no(context: Context): Intent = Intent(context, RideStatusReceiver::class.java)
+                .putExtra("status", "no")
+    }
+
+    override fun onReceive(context: Context, intent: Intent) {
+        val notificationManager = context.getSystemService(NotificationManager::class.java)
+        notificationManager.cancelAll()
+        when (intent.getStringExtra("status")) {
+            "yes" -> {
+            }
+            "no" -> {
+            }
+        }
+    }
+}
+
+class RideCompleteReceiver : BroadcastReceiver() {
     companion object {
         fun yes(context: Context): Intent = Intent(context, RideStatusReceiver::class.java)
                 .putExtra("status", "yes")
