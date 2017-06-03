@@ -7,6 +7,18 @@
     tools:context="org.rideshareinfo.rideshareinfo.MainActivity">
 
     <Button
+        android:id="@+id/driving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:text="Driving"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="447dp" />
+
+    <Button
         android:id="@+id/ride"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,18 +40,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteX="280dp"
-        tools:layout_editor_absoluteY="447dp" />
-
-    <Button
-        android:id="@+id/driving"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:text="Driving"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="447dp" />
 
     <android.support.v7.widget.RecyclerView
