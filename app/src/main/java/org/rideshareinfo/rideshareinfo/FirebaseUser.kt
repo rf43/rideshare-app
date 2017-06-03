@@ -25,6 +25,8 @@ class FirebaseUser(private val user: User) {
     }
 
     fun updateUserStatus() {
-        dbRefBaseState.child(KEY_STATUS_NODE).setValue(user.status)
+        dbRefBaseState
+                .child(user.name)
+                .child(KEY_STATUS_NODE).setValue(user.status)
     }
 }

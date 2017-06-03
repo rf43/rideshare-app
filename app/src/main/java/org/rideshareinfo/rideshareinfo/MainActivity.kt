@@ -66,9 +66,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     val allUserEventListener = object : ValueEventListener {
-        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+        override fun onDataChange(dataSnapshot: DataSnapshot) {
             val out = ArrayList<User>()
-            dataSnapshot?.children?.forEach {
+            dataSnapshot.children?.forEach {
                 out.add(User(
                         name = it.key as String,
                         status = it.child(KEY_STATUS_NODE).value as String
