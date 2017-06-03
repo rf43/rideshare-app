@@ -23,6 +23,10 @@ class MainActivity : AppCompatActivity() {
                 User("user1", "driving", 0L, 0.0 to 0.0),
                 User("user2", "need a ride", 0L, 0.0 to 0.0)
         ))
+
+        findViewById(R.id.good).setOnClickListener {
+            askUserStatusNotification(this)
+        }
     }
 }
 
