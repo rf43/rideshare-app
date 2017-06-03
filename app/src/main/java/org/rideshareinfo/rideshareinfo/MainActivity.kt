@@ -19,24 +19,35 @@ class MainActivity : AppCompatActivity() {
         list.layoutManager = LinearLayoutManager(this)
         val adapter = UserAdapter()
         list.adapter = adapter
-        adapter.setUsers(listOf(
+        adapter.users = listOf(
                 User("user1", "driving", 0L, 0.0 to 0.0),
                 User("user2", "need a ride", 0L, 0.0 to 0.0)
-        ))
+        )
+
+        findViewById(R.id.driving).setOnClickListener {
+            val user = FirebaseUser(adapter.users[0].copy(status = "driving"))
+            user.updateUserStatus()
+        }
+
+        findViewById(R.id.ride).setOnClickListener {
+            val user = FirebaseUser(adapter.users[0].copy(status = "need a ride"))
+            user.updateUserStatus()
+        }
 
         findViewById(R.id.good).setOnClickListener {
-            rideSurvayNotification(this)
+            val user = FirebaseUser(adapter.users[0].copy(status = "don't need a ride"))
+            user.updateUserStatus()
         }
     }
 }
 
 class UserAdapter : RecyclerView.Adapter<UserAdapter.Holder>() {
-    private var users = listOf<User>()
-
-    fun setUsers(users: List<User>) {
-        this.users = users
-        notifyDataSetChanged()
-    }
+    var users: List<User>
+        get() = users
+        set(value) {
+            this.users = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
