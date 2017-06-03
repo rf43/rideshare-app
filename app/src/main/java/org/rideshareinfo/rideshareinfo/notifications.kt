@@ -13,8 +13,8 @@ fun askUserStatusNotification(context: Context) {
     val notification = NotificationCompat.Builder(context)
             .setContentText("Do you need a ride?")
             .setSmallIcon(R.drawable.ic_notification)
-            .addAction(0, "Yes", PendingIntent.getBroadcast(context, 0, RideStatusReceiver.yes(context), 0))
-            .addAction(0, "No", PendingIntent.getBroadcast(context, 0, RideStatusReceiver.no(context), 0))
+            .addAction(0, "Yes", PendingIntent.getBroadcast(context, 1, RideStatusReceiver.yes(context), 0))
+            .addAction(0, "No", PendingIntent.getBroadcast(context, 2, RideStatusReceiver.no(context), 0))
             .build()
     notificationManager.notify(0, notification)
 }
