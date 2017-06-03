@@ -8,8 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.google.firebase.database.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var userAdapter: UserAdapter
+
+    private val dbRefBaseState: DatabaseReference = FirebaseDatabase.getInstance().reference
+            .child(KEY_RIDESHARE_DATA_BASE)
+            .child(KEY_USERS_NODE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,25 +24,25 @@ class MainActivity : AppCompatActivity() {
 
         val list = findViewById(R.id.users) as RecyclerView
         list.layoutManager = LinearLayoutManager(this)
-        val adapter = UserAdapter()
-        list.adapter = adapter
-        adapter.users = listOf(
+        userAdapter = UserAdapter()
+        list.adapter = userAdapter
+        userAdapter.users = listOf(
                 User("user1", "driving"),
                 User("user2", "need a ride")
         )
 
         findViewById(R.id.driving).setOnClickListener {
-            val user = FirebaseUser(adapter.users[0].copy(status = "driving"))
+            val user = FirebaseUser(userAdapter.users[0].copy(status = "driving"))
             user.updateUserStatus()
         }
 
         findViewById(R.id.ride).setOnClickListener {
-            val user = FirebaseUser(adapter.users[0].copy(status = "need a ride"))
+            val user = FirebaseUser(userAdapter.users[0].copy(status = "need a ride"))
             user.updateUserStatus()
         }
 
         findViewById(R.id.good).setOnClickListener {
-            val user = FirebaseUser(adapter.users[0].copy(status = "don't need a ride"))
+            val user = FirebaseUser(userAdapter.users[0].copy(status = "don't need a ride"))
             user.updateUserStatus()
         }
 
@@ -45,6 +52,33 @@ class MainActivity : AppCompatActivity() {
 
         findViewById(R.id.after).setOnClickListener {
             rideSurvayNotification(this)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dbRefBaseState.addValueEventListener(allUserEventListener)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        dbRefBaseState.removeEventListener(allUserEventListener)
+    }
+
+    val allUserEventListener = object : ValueEventListener {
+        override fun onDataChange(dataSnapshot: DataSnapshot?) {
+            val out = ArrayList<User>()
+            dataSnapshot?.children?.forEach {
+                out.add(User(
+                        name = it.key as String,
+                        status = it.child(KEY_STATUS_NODE).value as String
+                ))
+            }
+            userAdapter.users =  out
+        }
+
+        override fun onCancelled(databaseError: DatabaseError?) {
+
         }
     }
 }
